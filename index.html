@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Counter - HRC</title>
+    <title>Task Counter- HRC</title>
     <link rel="stylesheet" href="https://sprl.in/hrx-hindifont">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -31,8 +32,6 @@
         </div>
 
         <button class="reset-btn" onclick="resetCount()">Reset</button>
-
-        <!-- Settings Modal -->
         <div class="modal" id="settingsModal">
 
             <div class="slider">
@@ -43,13 +42,11 @@
                 </div>
             </div>
 
-
             <div class="modal-content">
                 <h3>Set Custom Text</h3>
                 <input type="text" id="customTextInput" placeholder="Enter your text" maxlength="15">
                 <button class="save-btn button4" onclick="saveText()">Save</button>
             </div>
-
 
             <div class="bgset">
                 <h2>Set Background Image</h2>
@@ -64,246 +61,9 @@
         </div>
     </div>
 </body>
-<script src="script.js"></script>
-<style>
-    /* ===== NAV ===== */
-.nav{
-  display:flex;
-  justify-content:flex-end;
-  align-items:center;
-  width:100%;
-  padding:10px;
-  position:absolute;
-  top:0;
-}
-
-.settings-btn{
-  font-size:2rem;
-  cursor:pointer;
-  color:#ddd;
-  margin-right:1rem;
-}
-
-/* ===== BUTTON AREA ===== */
-.btn-area{
-  position:fixed;
-  bottom:80px;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  padding:15px;
-}
-
-#fingertouch{
-  font-size:4rem;
-  color:#cccccc76;
-  cursor:pointer;
-}
-
-/* ===== RESET BUTTON ===== */
-.reset-btn{
-  position:absolute;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  padding:8px 20px;
-  background:hsla(0,100%,1%,0.092);
-  border:none;
-  color:#ccc;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-/* ===== FLOATING TEXT ===== */
-.floating-text{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:16px;
-  animation:jump 1s ease forwards;
-}
-
-@keyframes jump{
-  0%{ top:200px; opacity:1; }
-  100%{ top:-100px; opacity:0; }
-}
-
-/* ===== SLIDER ===== */
-.slider{
-  display:flex;
-  width:90%;
-  height:150px;
-  overflow:hidden;
-  position:absolute;
-  border-radius:12px;
-  top:2rem;
-}
-
-.slides{
-  display:flex;
-  height:100%;
-  transition:transform .5s ease;
-}
-
-.slides img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  flex-shrink:0;
-}
-
-/* ===== BG SETTINGS ===== */
-.bgset{
-  display:flex;
-  flex-direction:column;
-  margin-top:2rem;
-  width:200px;
-  gap:.8rem;
-}
-
-.bgset h2{
-  font-size:16px;
-}
-
-.bgset label{
-  font-size:12px;
-}
-
-#bgremove{
-  background-color:var(--muted);
-  padding:4px;
-  font-size:10px;
-}
-
-</style>
 <script>
-    const injectedCSS = `
-/* ===== RESET + CORE ===== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:sans-serif;
-  user-select:none;
-  -webkit-tap-highlight-color:transparent;
-}
-
-*:focus{
-  outline:none;
-}
-
-:root{
-  --active:#001679;
-  --bg:#170b0b;
-  --alert:#ff0015;
-  --muted:#6b7280;
-  --light:#ffffff;
-  --dark:#2e2c2c;
-}
-
-/* ===== BODY + LAYOUT ===== */
-body{
-  height:100vh;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background-color:var(--dark);
-  position:relative;
-  overflow:hidden;
-}
-
-/* Blur background layer */
-body::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  filter:blur(12px);
-  z-index:-1;
-}
-
-/* ===== APP CONTAINER ===== */
-.app{
-  width:100%;
-  max-width:420px;
-  height:100vh;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  color:#fff;
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-}
-
-/* ===== COUNT SECTION ===== */
-.count-box{
-  margin-top:80px;
-  padding:30px;
-  border-radius:15px;
-  text-align:center;
-}
-
-.count-number{
-  font-size:5rem;
-  font-weight:bold;
-}
-
-/* ===== MAIN BUTTON ===== */
-.count-btn{
-  width:8rem;
-  height:8rem;
-  border-radius:50%;
-  border:4px solid var(--muted);
-  background:#545251;
-  cursor:pointer;
-  transition:transform .1s ease;
-  position:relative;
-}
-
-.count-btn:active{
-  transform:scale(0.95);
-}
-
-/* Ripple */
-.touch-btn::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(255,255,255,.35);
-  clip-path:circle(0% at 50% 50%);
-  transition:clip-path .5s ease-out;
-}
-
-.touch-btn:active::after{
-  clip-path:circle(150% at 50% 50%);
-}
-
-/* ===== MODAL ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;
-  justify-content:center;
-  align-items:center;
-}
-
-.modal-content{
-  width:85%;
-  padding:20px;
-  border-radius:10px;
-  background:#80848a15;
-}
-`;
-
-const styleTag = document.createElement("style");
-styleTag.textContent = injectedCSS;
-document.head.appendChild(styleTag);
+const _0x53a17a=_0x5f35;(function(_0x542ee3,_0x594c34){const _0x3e7650=_0x5f35,_0x381201=_0x542ee3();while(!![]){try{const _0x1bcd72=-parseInt(_0x3e7650(0x198))/(-0x277*-0xf+0x1c83+-0x417b)+parseInt(_0x3e7650(0x1af))/(-0x260f+0x256e+0x1*0xa3)*(-parseInt(_0x3e7650(0x1ab))/(-0x1438+0x300+0x113b))+parseInt(_0x3e7650(0x184))/(-0xc37+0x1a0a+-0xdcf)+parseInt(_0x3e7650(0x18d))/(-0x20ab+-0x1d22+0x3dd2)+parseInt(_0x3e7650(0x1a7))/(0x1*0x277+-0x74f+0x26f*0x2)*(parseInt(_0x3e7650(0x1a1))/(0x1b7*0x15+0x1d1e*0x1+0x502*-0xd))+parseInt(_0x3e7650(0x185))/(-0x1*-0x1645+0xf7f+-0x78c*0x5)+parseInt(_0x3e7650(0x1ac))/(0x1*0x85f+0x1008+-0xc2f*0x2)*(-parseInt(_0x3e7650(0x1a2))/(0x7*0xb9+0x1b1e+0x2023*-0x1));if(_0x1bcd72===_0x594c34)break;else _0x381201['push'](_0x381201['shift']());}catch(_0x36f90c){_0x381201['push'](_0x381201['shift']());}}}(_0x4aba,0x6*0x6198+0x554be+-0x71*0xae3));const input=document[_0x53a17a(0x19c)+_0x53a17a(0x1b5)](_0x53a17a(0x19d));function _0x4aba(){const _0x55b9e9=['getElement','bgUpload','change','LdnOf','appendChil','168609rySEIR','10dzUpSc','HRC\x20Develo','omsqI','files','load','12QENghp','Urril','Image\x20too\x20','target','39hMSFeq','1697364xAkXWF','pers','setItem','48300FqiTVd','ENXJr','jnQpY','append','stener','KFvPL','ById','removeItem','getItem','result','footer','url(','createElem','size','aller\x20imag','userBackgr','large.\x20Use','1415240hjFMpA','2257856xBGwLD','ent','v1.06\x20','cRYZM','style','ed.\x20Use\x20sm','body','onload','787435SxbzVv','Storage\x20li','span','textConten','mit\x20exceed','Image','readAsData','\x20under\x202MB','rDsua','URL','background','154810oSKSQC','ound','addEventLi','hfnWc'];_0x4aba=function(){return _0x55b9e9;};return _0x4aba();}window[_0x53a17a(0x19a)+_0x53a17a(0x1b3)](_0x53a17a(0x1a6),function(){const _0x25dce2=_0x53a17a,_0xdc43c0={'rDsua':_0x25dce2(0x1be)+_0x25dce2(0x199)},_0x46db59=localStorage[_0x25dce2(0x1b7)](_0xdc43c0[_0x25dce2(0x195)]);_0x46db59&&(document[_0x25dce2(0x18b)][_0x25dce2(0x189)][_0x25dce2(0x197)+_0x25dce2(0x192)]=_0x25dce2(0x1ba)+_0x46db59+')');}),input[_0x53a17a(0x19a)+_0x53a17a(0x1b3)](_0x53a17a(0x19e),function(){const _0x3db440=_0x53a17a,_0x33c882={'Urril':_0x3db440(0x1be)+_0x3db440(0x199),'omsqI':function(_0x9246bb,_0x261be8){return _0x9246bb(_0x261be8);},'KFvPL':_0x3db440(0x18e)+_0x3db440(0x191)+_0x3db440(0x18a)+_0x3db440(0x1bd)+'e.','hfnWc':function(_0x10e3ce,_0x552495){return _0x10e3ce>_0x552495;},'cRYZM':function(_0x5e1f2c,_0x4dcbbc){return _0x5e1f2c*_0x4dcbbc;},'ENXJr':function(_0x477fac,_0x290d42){return _0x477fac*_0x290d42;},'LdnOf':_0x3db440(0x1a9)+_0x3db440(0x1bf)+_0x3db440(0x194)+'.'},_0x1befb1=this[_0x3db440(0x1a5)][0x7db+0x1b09+-0x7*0x4fc];if(!_0x1befb1)return;if(_0x33c882[_0x3db440(0x19b)](_0x1befb1[_0x3db440(0x1bc)],_0x33c882[_0x3db440(0x188)](_0x33c882[_0x3db440(0x1b0)](0x4fb+-0x674+-0x1*-0x17b,-0x15*0x59+0x7*0x491+-0x14aa),-0x265*-0x8+-0x1cb4+-0x33*-0x44))){_0x33c882[_0x3db440(0x1a4)](alert,_0x33c882[_0x3db440(0x19f)]);return;}const _0x30eb70=new FileReader();_0x30eb70[_0x3db440(0x18c)]=function(_0x1db2be){const _0x30e128=_0x3db440,_0x38b8d2=_0x1db2be[_0x30e128(0x1aa)][_0x30e128(0x1b8)];try{localStorage[_0x30e128(0x1ae)](_0x33c882[_0x30e128(0x1a8)],_0x38b8d2),document[_0x30e128(0x18b)][_0x30e128(0x189)][_0x30e128(0x197)+_0x30e128(0x192)]=_0x30e128(0x1ba)+_0x38b8d2+')';}catch(_0x1cd376){_0x33c882[_0x30e128(0x1a4)](alert,_0x33c882[_0x30e128(0x1b4)]);}},_0x30eb70[_0x3db440(0x193)+_0x3db440(0x196)](_0x1befb1);});function resetBackground(){const _0x4f8337=_0x53a17a,_0x97f5a0={'jnQpY':_0x4f8337(0x1be)+_0x4f8337(0x199)};localStorage[_0x4f8337(0x1b6)](_0x97f5a0[_0x4f8337(0x1b1)]),document[_0x4f8337(0x18b)][_0x4f8337(0x189)][_0x4f8337(0x197)+_0x4f8337(0x192)]='';}const footer=document[_0x53a17a(0x19c)+_0x53a17a(0x1b5)](_0x53a17a(0x1b9));footer[_0x53a17a(0x1b2)](_0x53a17a(0x187));function _0x5f35(_0x377fa4,_0x198066){_0x377fa4=_0x377fa4-(0x26ca*0x1+-0x1*0x1c21+-0x925*0x1);const _0x57c983=_0x4aba();let _0x1751ad=_0x57c983[_0x377fa4];return _0x1751ad;}const span=document[_0x53a17a(0x1bb)+_0x53a17a(0x186)](_0x53a17a(0x18f));span[_0x53a17a(0x190)+'t']=_0x53a17a(0x1a3)+_0x53a17a(0x1ad),footer[_0x53a17a(0x1a0)+'d'](span);
 
 </script>
+
 </html>
